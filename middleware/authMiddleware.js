@@ -1,31 +1,41 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = process.env.JWT_SECRET || "devsecret";
+const User = require("../models/User");
 
-const wantsHtml = (req) => req.headers.accept?.includes("text/html");
-
-const authMiddleware = (req, res, next) => {
-  const bearerToken = req.headers.authorization?.split(" ")[1];
-  const cookieToken = req.cookies?.token;
-  const token = bearerToken || cookieToken;
-
-  if (!token) {
-    console.warn("Auth: no token found");
-    return wantsHtml(req)
-      ? res.redirect("/auth/login")
-      : res.status(401).json({ message: "No token provided" });
-  }
-
+const authMiddleware = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
-    res.locals.user = decoded;
+    const authHeader = req.headers.authorization || "";
+    let token = null;
+
+    if (authHeader.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
+    } else if (req.cookies && req.cookies.token) {
+      token = req.cookies.token;
+    }
+
+    if (!token) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.id).select("-password");
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    req.user = {
+      id: user._id.toString(),
+      role: user.role,
+      name: user.name,
+      email: user.email
+    };
+
     next();
   } catch (err) {
-    console.warn("Auth: invalid token", err?.message);
-    return wantsHtml(req)
-      ? res.redirect("/auth/login")
-      : res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 
 module.exports = { authMiddleware };
+
+
