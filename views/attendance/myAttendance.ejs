@@ -1,0 +1,21 @@
+<%- include('../partials/header', { title: 'My Attendance', user }) %>
+
+<h2 class="mb-4">My Attendance Records</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% attendance.forEach(record => { %>
+      <tr>
+        <td><%= record.date.toDateString() %></td>
+        <td><%= record.status %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/footer') %>

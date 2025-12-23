@@ -1,0 +1,31 @@
+<%- include('../partials/header', { title: 'Signup', user }) %>
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h2 class="text-center mb-4">Signup</h2>
+    <form method="POST" action="/auth/signup">
+      <div class="mb-3">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label>Role</label>
+        <select name="role" class="form-select">
+          <option value="Student">Student</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Signup</button>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
