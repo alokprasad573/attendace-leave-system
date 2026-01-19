@@ -6,7 +6,7 @@ const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization || "";
     let token = null;
 
-    if (authHeader.startsWith("Bearer ")) {
+    if (authHeader.startsWith("Bearer")) {
       token = authHeader.split(" ")[1];
     } else if (req.cookies && req.cookies.token) {
       token = req.cookies.token;
