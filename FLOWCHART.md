@@ -15,9 +15,9 @@ graph TD
         Auth["Auth Middleware"]
         
         subgraph Routes ["API Routes"]
-            AuthRoutes[/"/auth"/]
-            AttRoutes[/"/attendance"/]
-            LeaveRoutes[/"/leave"/]
+            AuthRoutes["/auth/"]
+            AttRoutes["/attendance/"]
+            LeaveRoutes["/leave/"]
         end
         
         subgraph Controllers ["Logic & Models"]
@@ -27,7 +27,7 @@ graph TD
         end
     end
     
-    Database[("MongoDB Database")]
+    Database["MongoDB Database"]
 
     %% Connections
     Client -->|"HTTP Requests"| Server
