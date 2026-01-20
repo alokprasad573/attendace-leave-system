@@ -152,3 +152,41 @@ graph TD
     SetStatusR --> UpdateDB
     UpdateDB --> Result["Return Updated Leave"]
 ```
+
+## 5. Database Design
+
+This diagram represents the database schema and the relationships between the collections.
+
+```mermaid
+erDiagram
+    USER ||--o{ ATTENDANCE : "marks"
+    USER ||--o{ LEAVE : "requests"
+
+    USER {
+        ObjectId _id PK
+        String name
+        String email
+        String password
+        String role "Admin/Student"
+        Date createdAt
+        Date updatedAt
+    }
+
+    ATTENDANCE {
+        ObjectId _id PK
+        ObjectId user FK
+        Date date
+        String status "Present/Absent"
+        Date createdAt
+        Date updatedAt
+    }
+
+    LEAVE {
+        ObjectId _id PK
+        ObjectId user FK
+        String reason
+        String status "pending/approved/rejected"
+        Date createdAt
+        Date updatedAt
+    }
+```
